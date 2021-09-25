@@ -19,8 +19,9 @@ class ProductsGrid extends StatelessWidget {
         mainAxisSpacing: 10,
       ),
       itemBuilder: (context, index) {
-        return ChangeNotifierProvider(
-          create: (ctx) => loadedProducts[
+        //! Use the ChangeNotifierProvider.value() only when you are providing a value of an existing object
+        return ChangeNotifierProvider.value(
+          value: loadedProducts[
               index], //! We are interested in only one Product. Therefore we have to provide only a single Product item as provider
           //! And Since we are using Providers , we don't need any arguments to pass into ProductItem
           child: ProductItem(
