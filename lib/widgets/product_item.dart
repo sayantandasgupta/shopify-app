@@ -17,39 +17,47 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context);
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: GridTile(
-        child: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
-                arguments: product.id);
-          },
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
-          ),
-        ),
-        footer: GridTileBar(
-          backgroundColor: Colors.black87,
-          leading: IconButton(
-            onPressed: () {
-              product.changeFavoriteStatus();
+    // final product = Provider.of<Product>(context);
+
+    /**
+     * ! Using Consumer Widget is an alternative to using the Provider.of<Type> method of calling data from the provider
+     * ! Using Provider.of method, the entire widget tree gets built if the data changes in the provider
+     * ! if you do not want that kind of latency, then use the Consumer Widget
+     */
+    return Consumer<Product>(
+      builder: (ctx, product, child) => ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: GridTile(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
+                  arguments: product.id);
             },
-            icon: Icon(
-              product.isFavorite ? Icons.favorite : Icons.favorite_border,
+            child: Image.network(
+              product.imageUrl,
+              fit: BoxFit.cover,
             ),
-            color: Theme.of(context).accentColor,
           ),
-          title: Text(
-            "${product.productName}",
-            textAlign: TextAlign.center,
-          ),
-          trailing: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.shopping_cart),
-            color: Theme.of(context).accentColor,
+          footer: GridTileBar(
+            backgroundColor: Colors.black87,
+            leading: IconButton(
+              onPressed: () {
+                product.changeFavoriteStatus();
+              },
+              icon: Icon(
+                product.isFavorite ? Icons.favorite : Icons.favorite_border,
+              ),
+              color: Theme.of(context).accentColor,
+            ),
+            title: Text(
+              "${product.productName}",
+              textAlign: TextAlign.center,
+            ),
+            trailing: IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.shopping_cart),
+              color: Theme.of(context).accentColor,
+            ),
           ),
         ),
       ),
