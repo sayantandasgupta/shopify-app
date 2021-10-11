@@ -23,8 +23,8 @@ class MyApp extends StatelessWidget {
         title: 'Shopify App',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo)
-              .copyWith(secondary: Colors.deepOrange),
+          primarySwatch: Colors.indigo,
+          accentColor: Colors.deepOrange,
         ),
         home: ProductOverviewScreen(),
         routes: {
