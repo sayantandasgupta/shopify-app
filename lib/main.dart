@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/products_provider.dart';
 import '../screens/product_detail_screen.dart';
 import '../screens/products_overview_screen.dart';
+import '../providers/cart.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,8 +18,11 @@ class MyApp extends StatelessWidget {
     //! Use change Notifier Provider wrapping over MaterialApp to register the provider you have used.
     //! If you are using Multiple Providers, use MultiProvider wrapping over the MaterialApp
     //! Use ChangeNotifierProvider and not the .value() method preferrably when you are declaring a new instance of a Provider Object
-    return ChangeNotifierProvider(
-      create: (ctx) => ProductsProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (ctx) => ProductsProvider()),
+        ChangeNotifierProvider(create: (ctx) => Cart()),
+      ],
       child: MaterialApp(
         title: 'Shopify App',
         debugShowCheckedModeBanner: false,
