@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopify_app/providers/cart.dart';
 
 import '../providers/product.dart';
 import '../screens/product_detail_screen.dart';
@@ -24,6 +25,10 @@ class ProductItem extends StatelessWidget {
      * ! Using Provider.of method, the entire widget tree gets built if the data changes in the provider
      * ! if you do not want that kind of latency, then use the Consumer Widget
      */
+    final cart = Provider.of<Cart>(context,
+        listen:
+            false); //! We are keeping listen as false as we are not interested in any changes in Cart Provider
+    //! We are simply going to add to the cart and not listen to any changes
     return Consumer<Product>(
       builder: (ctx, product, child) => ClipRRect(
         borderRadius: BorderRadius.circular(10),
@@ -54,7 +59,11 @@ class ProductItem extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                cart.addItem(product.id, product.productName, product.price);
+                //! We have added the product to the cart. Now we also need a way to display the products added to the cart. we are going to do that in the products overview page
+                //! We can add a navigation drawer or an appBar action for this purpose. Let's go to Products Overview screen for this
+              },
               icon: Icon(Icons.shopping_cart),
               color: Theme.of(context).accentColor,
             ),
