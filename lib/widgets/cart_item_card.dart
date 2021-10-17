@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/cart.dart';
 
 class CartItemCard extends StatelessWidget {
   final String id;
+  final String productId;
   final double price;
   final int quantity;
   final String title;
   const CartItemCard({
     Key? key,
     required this.id,
+    required this.productId,
     required this.price,
     required this.quantity,
     required this.title,
@@ -15,23 +20,44 @@ class CartItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(
-        horizontal: 15,
-        vertical: 4,
+    //! We have created a ListView of the products that have been added to the card in the CardScreen
+    //! Now we have to add a functionality such that we can remove the items from the cart by swiping
+    //! We can do this by using the Dismissible Widget
+
+    return Dismissible(
+      key: ValueKey(id),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: Theme.of(context).errorColor,
+        child: Icon(
+          Icons.delete,
+          color: Colors.white,
+          size: 40,
+        ),
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 20),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(8),
-        child: ListTile(
-          leading: CircleAvatar(
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: FittedBox(child: Text("\$$price")),
+      onDismissed: (direction) {
+        Provider.of<Cart>(context, listen: false).removeItem(productId);
+      },
+      child: Card(
+        margin: EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 4,
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: ListTile(
+            leading: CircleAvatar(
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: FittedBox(child: Text("\$$price")),
+              ),
             ),
+            title: Text("$title"),
+            subtitle: Text("Total: \$${price * quantity}"),
+            trailing: Text("$quantity x"),
           ),
-          title: Text("$title"),
-          subtitle: Text("Total: \$${price * quantity}"),
-          trailing: Text("$quantity x"),
         ),
       ),
     );
