@@ -67,6 +67,15 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
+  //! After the Orders have been placed, we need to clear our cart
+  //! Since we are controlling the Cart from this Provider, therefore we shall clear the _items Map after Order has been placed
+  //! The following function on being called, assigns as empty map to _items and notifies its Listeners
+
+  void clear() {
+    _items = {};
+    notifyListeners();
+  }
+
   void removeItem(String productId) {
     _items.remove(productId);
     notifyListeners();

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopify_app/widgets/cart_item_card.dart';
 
+import '../providers/orders.dart';
+import '../widgets/cart_item_card.dart';
 import '../providers/cart.dart';
 
 class CartScreen extends StatelessWidget {
@@ -44,7 +45,11 @@ class CartScreen extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      //TODO: Add the ORDER NOW functionality
+                      //! For the orders provider, we are not interested in listening to any changes, we are simply invoking a functionality to add to the Orders list
+                      //! But for the cart provider, any change to the Cart map, should be reflected in the Cart Screen, therefore we have to listen to changes of the Cart provider
+                      Provider.of<Orders>(context, listen: false).addOrder(
+                          cart.items.values.toList(), cart.totalAmount);
+                      cart.clear();
                     },
                     child: Text(
                       "ORDER NOW",
