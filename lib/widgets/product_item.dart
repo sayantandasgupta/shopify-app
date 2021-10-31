@@ -63,6 +63,24 @@ class ProductItem extends StatelessWidget {
                 cart.addItem(product.id, product.productName, product.price);
                 //! We have added the product to the cart. Now we also need a way to display the products added to the cart. we are going to do that in the products overview page
                 //! We can add a navigation drawer or an appBar action for this purpose. Let's go to Products Overview screen for this
+                //! After the card Item has been added to the cart, we want to display a SnackBar so that the users could be notified
+                //! That an item has been added to the cart
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Item has been added to the cart!"),
+                    duration: Duration(seconds: 2),
+                    //! So we have added the SnackBar. But we also want to give the user
+                    //! The functionality of undoing any recent additions to the cart
+                    //! For that we shall add an action button to the SnackBar
+                    action: SnackBarAction(
+                      label: "UNDO",
+                      onPressed: () {
+                        cart.removeSingleItem(product.id);
+                      },
+                    ),
+                  ),
+                );
               },
               icon: Icon(Icons.shopping_cart),
               color: Theme.of(context).accentColor,

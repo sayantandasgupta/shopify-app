@@ -67,6 +67,27 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
+  void removeSingleItem(String productId) {
+    if (!_items.containsKey(productId)) {
+      return;
+    }
+
+    if (_items[productId]!.quantity > 1) {
+      _items.update(
+        productId,
+        (existingProd) => CartItem(
+            id: existingProd.id,
+            title: existingProd.title,
+            quantity: existingProd.quantity - 1,
+            price: existingProd.price),
+      );
+    } else {
+      _items.removeWhere((key, value) => key == productId);
+    }
+
+    notifyListeners();
+  }
+
   //! After the Orders have been placed, we need to clear our cart
   //! Since we are controlling the Cart from this Provider, therefore we shall clear the _items Map after Order has been placed
   //! The following function on being called, assigns as empty map to _items and notifies its Listeners
