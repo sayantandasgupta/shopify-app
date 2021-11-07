@@ -14,12 +14,13 @@ class UserProductItem extends StatelessWidget {
         backgroundImage: NetworkImage(imageUrl),
       ),
       trailing: FractionallySizedBox(
-        widthFactor: 0.2,
+        widthFactor: 0.3,
         child: Row(
           children: <Widget>[
             IconButton(
               onPressed: () {
                 //TODO Add editing functionalities
+                Navigator.of(context).pushNamed('/editProduct');
               },
               icon: Icon(Icons.edit),
               color: Theme.of(context).primaryColor,
